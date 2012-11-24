@@ -9,15 +9,6 @@ import string
 import simplejson
 import re
 
-JOBS_PER_FILE = 250
-
-#CACHESIZE = 4000    # For local
-CACHESIZE = 1200 # For ec2 small
-#CACHESIZE = 400 # For ec2 computation nodes
-
-#KFOLD = True
-KFOLD = False
-
 import os
 from collections import OrderedDict
 
@@ -34,74 +25,6 @@ import random
 #random.seed(0)
 
 import glob
-
-# Code from http://rosettacode.org/wiki/Power_set#Python
-def list_powerset2(lst):
-    return reduce(lambda result, x: result + [subset + [x] for subset in result],
-                  lst, [[]])
-def powerset(s):
-    return frozenset(map(frozenset, list_powerset2(list(s))))
-
-def svmhyperparameters():
-    HYPERPARAMS = OrderedDict({
-        "C": [0.1, 1, 10, 100, 1000],
-        "epsilon": [0.001, 0.01, 0.1, 1.0],
-        "kernel": ["rbf", "sigmoid", "linear", "poly"],
-        "degree": [1,2,3,4,5],
-        "gamma": [0.],
-        "cache_size": [CACHESIZE],
-        "shrinking": [False, True],
-    })
-    hyperparams = list(itertools.product(*HYPERPARAMS.values()))
-    # We don't remove redundant hyperparams because we want to randomize over gamma and degree.
-    # Reason being, we do random hyperparameter search, and don't have
-    # logic to figure out which are redundant when picking the best ones.
-    # i.e. if we picked the hyperparams deterministically when they
-    # aren't used, there would be a bias towards thinking those are OVERALL
-    # the best.
-#    nonredundant_hyperparams = []
-#    for h in hyperparams:
-#        dicth = dict(zip(HYPERPARAMS.keys(), h))
-#        if dicth["kernel"] != "linear":
-#            nonredundant_hyperparams.append(h)
-#        # degree and gamma are not used for linear kernel, so only use one hyperparam for these
-#        elif dicth["degree"] == HYPERPARAMS["degree"][1] and dicth["gamma"] == HYPERPARAMS["gamma"][1]:
-#            nonredundant_hyperparams.append(h)
-#    hyperparams = nonredundant_hyperparams
-    random.shuffle(hyperparams)
-    for h in hyperparams:
-        yield dict(zip(HYPERPARAMS.keys(), h))
-
-def gbrhyperparameters():
-    HYPERPARAMS = OrderedDict({
-        'loss': ['ls', 'lad'],
-        'learn_rate': [1., 0.1, 0.01],
-        'n_estimators': [10, 100, 1000],
-        'max_depth': [1, 3, 5, 10, None],
-        'min_samples_split': [1, 3, 10],
-        'min_samples_leaf': [1, 3, 10],
-        'subsample': [0.1, 0.32, 1],
-    })
-    hyperparams = list(itertools.product(*HYPERPARAMS.values()))
-    random.shuffle(hyperparams)
-    for h in hyperparams:
-        yield dict(zip(HYPERPARAMS.keys(), h))
-
-def rfrhyperparameters():
-    HYPERPARAMS = OrderedDict({
-        'n_estimators': [10, 100, 1000]
-        'max_depth': [1, 3, 5, 10, None],
-        'min_samples_split': [1, 3, 10],
-        'min_samples_leaf': [1, 3, 10],
-        'min_density': [0.01, 0.1, 1.0],
-        'bootstrap': [True, False],
-        'oob_score': [True, False],
-#        'verbose': [True],
-    })
-    hyperparams = list(itertools.product(*HYPERPARAMS.values()))
-    random.shuffle(hyperparams)
-    for h in hyperparams:
-        yield dict(zip(HYPERPARAMS.keys(), h))
 
 if __name__ == "__main__":
     modelconfigs = []
