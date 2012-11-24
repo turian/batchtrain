@@ -12,7 +12,7 @@ JOBS_PER_FILE = 5
 #KFOLD = False
 
 # Classification models
-# TODO: Add SVM and GBC
-MODELS_TO_USE = ["RandomForestClassifier"]
+# TODO: Add GBC
+MODELS_TO_USE = ["SVC", "RandomForestClassifier"]
 ## Regression models
 #MODELS_TO_USE = ["SVR", "GradientBoostedRegressor", "RandomForestRegressor"]
