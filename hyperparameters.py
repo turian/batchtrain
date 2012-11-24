@@ -3,6 +3,9 @@ from locals import *
 from collections import OrderedDict
 import itertools
 
+import sklearn.svm
+import sklearn.ensemble
+
 # Code from http://rosettacode.org/wiki/Power_set#Python
 def list_powerset2(lst):
     return reduce(lambda result, x: result + [subset + [x] for subset in result],
@@ -26,8 +29,8 @@ MODEL_HYPERPARAMETERS = {
         "shrinking": [False, True],
     }),
 
-    "GradientBoostedRegressor": OrderedDict({
-        'loss': ['ls', 'lad'],
+    "GradientBoostingRegressor": OrderedDict({
+        'loss': ['ls', 'lad', 'huber', 'quantile'],
         'learn_rate': [1., 0.1, 0.01],
         'n_estimators': [10, 32, 100, 320],
         'max_depth': [1, 3, None],
@@ -60,4 +63,11 @@ MODEL_HYPERPARAMETERS = {
         'oob_score': [True, False],
 #        'verbose': [True],
     }),
+}
+
+MODEL_NAME_TO_CLASS = {
+    "SVR": sklearn.svm.SVR,
+    "GradientBoostingRegressor": sklearn.ensemble.GradientBoostingRegressor,
+    "RandomForestClassifier": sklearn.ensemble.RandomForestClassifier,
+    "RandomForestRegressor": sklearn.ensemble.RandomForestRegressor,
 }

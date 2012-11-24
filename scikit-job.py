@@ -7,13 +7,10 @@ WARNING: We convert ALL features to DENSE!
 import sys
 import simplejson
 
+from hyperparameters import MODEL_NAME_TO_CLASS
+
 from jobman import Job
 
-from sklearn.svm import SVR
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.ensemble import GradientBoostingRegressor
-#from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import SGDRegressor
 import numpy
 
 from sklearn.cross_validation import KFold
@@ -113,7 +110,7 @@ def train(num, ty, clf, train_set_x, train_set_y, valid_set_x, valid_set_y, job,
 #    return X, Y
 
 
-def runjob(regressor, h, num, features, kfold, job):
+def runjob(model, h, num, features, kfold, job):
         # y-values
         valid_set_y, train_set_y = cPickle.load(open("datagz/sparse.test%d.pkl.gz" % num))
 
@@ -147,12 +144,12 @@ def runjob(regressor, h, num, features, kfold, job):
         print >> sys.stderr, "valid = %s, train = %s" % (valid_set_x.shape, train_set_x.shape)
         print >> sys.stderr, stats()
 
-        clf = regressor(**h)
+        clf = model(**h)
         train(num, features, clf, train_set_x, train_set_y, valid_set_x, valid_set_y, kfold=kfold, job=job)
 
 if __name__ == "__main__":
     parser = OptionParser()
-    parser.add_option("--regressor", dest="regressor")
+    parser.add_option("--model", dest="model")
     parser.add_option("--hyperparameters", dest="hyperparameters")
     parser.add_option("--num", dest="num", type=int)
     parser.add_option("--kfold", dest="kfold", action="store_true", default=False)
@@ -160,8 +157,10 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
 #    print options.hyperparameters
     options.hyperparameters = simplejson.loads(options.hyperparameters)
-    job = Job(regressor=options.regressor, hyperparameters=options.hyperparameters, num=options.num, features=args, kfold=options.kfold)
+    job = Job(model=options.model, hyperparameters=options.hyperparameters, num=options.num, features=args, kfold=options.kfold)
     if "cache_size" in job.parameters["hyperparameters"]:
+        # This parameter shouldn't affect the result, it's just used to
+        # determine training efficiency.
         del job.parameters["hyperparameters"]["cache_size"]
     if job.result is not None:
         # If the result is False (below TASKMIN) and we aren't forcing a numerical result
@@ -175,12 +174,6 @@ if __name__ == "__main__":
             print >> sys.stderr, "We have a result for %s (%s), but FORCE=True" % (job.parameters, job.result)
         else:
             assert 0
-    if options.regressor == "SVR":
-        options.regressor = SVR
-    elif options.regressor == "GradientBoostingRegressor":
-        options.regressor = GradientBoostingRegressor
-    elif options.regressor == "RandomForestRegressor":
-        options.regressor = RandomForestRegressor
-    else:
-        assert 0
-    runjob(regressor=options.regressor, h=options.hyperparameters, num=options.num, features=args, kfold=options.kfold, job=job)
+
+    options.model = MODEL_NAME_TO_CLASS[options.model]
+    runjob(model=options.model, h=options.hyperparameters, num=options.num, features=args, kfold=options.kfold, job=job)
