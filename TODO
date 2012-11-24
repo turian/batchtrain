@@ -10,6 +10,8 @@
     * Limitation about converting everything to dense.
         * Is this even necessary?
     * jobman.py loosely inspired by UdeM's jobman.
+    * bestmodel.py
+        And how it works
 
 * hyperparameters.yaml or hyperparameters.py file
 
@@ -26,6 +28,7 @@
 their examples, we want to shuffle the fold indices.
 
 * EXPERIMENT_NAME should be derived from hashing the dataset.
+    * Put EXPERIMENT_NAME in debug output
 
 * Instead of creating a shell script, directly submit to qsub.
 
