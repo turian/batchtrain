@@ -45,6 +45,7 @@ a lot of money.)
 2. Preprocess your data in sklearn format. [describe more]
 3. Run `./queue-scikit-jobs.py`, which will queue up a bunch of
 `./scikit-job.py` jobs.
+4. Run bestmodel to get the best model.
 
 ...
 
