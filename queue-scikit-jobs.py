@@ -8,9 +8,7 @@ import sys
 import string
 import simplejson
 import re
-
 import os
-
 import random
 
 # Don't do this, because we want a different randomization each time.
@@ -21,6 +19,10 @@ from locals import *
 from hyperparameters import all_hyperparameters, MODEL_HYPERPARAMETERS
 
 if __name__ == "__main__":
+    # First command-line param should be the X_Y Pickle file.
+    assert len(sys.argv) == 2
+    X_Y_file = sys.argv[1]
+
     modelconfigs = []
     for model in MODELS_TO_USE:
         oldlen = len(modelconfigs)
@@ -38,7 +40,7 @@ if __name__ == "__main__":
     os.system("chmod +x %s" % batchfile)
     for i, modelconfig in enumerate(modelconfigs):
         model, h = modelconfig
-        cmd = "./scikit-job.py --kfold --model %s --hyperparameters %s" % (model, repr(simplejson.dumps(h)))
+        cmd = "./scikit-job.py --kfold --model %s --hyperparameters %s %s" % (model, repr(simplejson.dumps(h)), X_Y_file)
         cmds.append(cmd)
         
         files += 1

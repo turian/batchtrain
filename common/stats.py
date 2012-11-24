@@ -18,4 +18,4 @@ def stats():
     usage = 100. * usersystime / (realtime + 0.00001)
     usersystime = datetime.timedelta(seconds=usersystime)
     realtime = datetime.timedelta(seconds=realtime)
-    return "%s %s: %s user+sys, %s real, %.2f%% usage, %.2f MB" % (nodename, datetime.datetime.now(), usersystime, realtime, usage, memory.memory()/1024./1024.)
+    return "%s %s: %s user+sys, %s real, %.2f%% usage, %.2f MB" % (nodename, datetime.datetime.now(), usersystime, realtime, usage, common.memory.memory()/1024./1024.)
