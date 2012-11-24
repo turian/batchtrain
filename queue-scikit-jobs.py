@@ -10,14 +10,6 @@ import simplejson
 import re
 
 import os
-from collections import OrderedDict
-
-try:
-#    from common.timeout import timeout
-    from common.stats import stats
-except:
-    from stats import stats
-#    stats = lambda: None
 
 import itertools
 import random
@@ -88,7 +80,6 @@ if __name__ == "__main__":
     mn = list(itertools.product(modelconfigs, numfeatures))
     random.shuffle(mn)
     print >> sys.stderr, "%d total jobs" % len(mn)
-    print >> sys.stderr, stats()
 
     files = 0
     cmds = []
