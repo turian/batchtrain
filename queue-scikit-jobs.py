@@ -32,6 +32,10 @@ if __name__ == "__main__":
 
     files = 0
     cmds = []
+    batchfile = "./output/submit-batch.sh"
+    batch = open(batchfile, "wt")
+    batch.write("#!/bin/sh\n")
+    os.system("chmod +x %s" % batchfile)
     for i, modelconfig in enumerate(modelconfigs):
         model, h = modelconfig
         cmd = "./scikit-job.py --kfold --model %s --hyperparameters %s" % (model, repr(simplejson.dumps(h)))
@@ -39,14 +43,14 @@ if __name__ == "__main__":
         
         files += 1
         if files % JOBS_PER_FILE == 0:
-            jobcmd = "job%06d.sh" % (files/JOBS_PER_FILE)
+            jobcmd = "output/job%06d.sh" % (files/JOBS_PER_FILE)
             jobfile = open(jobcmd, "wt")
             jobfile.write("#!/bin/sh\n")
             for cmd in cmds:
                 jobfile.write(cmd + "\n")
             cmds = []
             os.system("chmod +x %s" % jobcmd)
-            print "qsub -V -b y -cwd ./%s" % jobcmd
-            sys.stdout.flush()
-            
+            batch.write("qsub -V -b y -cwd ./%s\n" % jobcmd)
 #        if i > 1000: break
+    print >> sys.stderr, "To submit the newly created jobs, run:"
+    print >> sys.stderr, batchfile
