@@ -1,10 +1,16 @@
 * Write a README
     * Basic description about how to get starcluster set up.
+        * Need mongo installed in each node.
+        * Need scikit-learn installed in each node.
     * Cite Ng work.
     * Describe how to play with hyperparameter values.
     * Limitation about converting everything to dense.
         * Is this even necessary?
     * jobman.py loosely inspired by UdeM's jobman.
+
+* hyperparameters.yaml or hyperparameters.py file
+
+* Discuss taskmin functionality, show how it can be added back
 
 
 * Demo and instructions for how to use script from end-to-end.
