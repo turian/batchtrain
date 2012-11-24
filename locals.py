@@ -7,7 +7,7 @@
 EXPERIMENT_NAME = "experiment"
 
 CACHESIZE = 400 # For ec2 small
-JOBS_PER_FILE = 250
+JOBS_PER_FILE = 5
 ##KFOLD = True
 #KFOLD = False
 

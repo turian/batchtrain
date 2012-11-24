@@ -22,6 +22,8 @@
 * We convert to dense in scikit-job.py. Can we avoid this?
 
 
+* Folds are shuffled? Or not? Because if the person hasn't shuffled
+their examples, we want to shuffle the fold indices.
 
 * EXPERIMENT_NAME should be derived from hashing the dataset.
 
