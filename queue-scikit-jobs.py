@@ -44,24 +44,12 @@ def powerset(s):
 
 def svmhyperparameters():
     HYPERPARAMS = OrderedDict({
-        # 0.01-0.1, 10 aren't good. 1 is okay. 32 and 100 are good.
-        # 320 and 100 is not good for training with DBN. 23 is okay.
-        #"C": [0.01, 0.1, 1, 10, 100],
-        "C": [3.2, 10, 32, 100, 320, 1000],
-        #"C": [1, 3.2, 10],
-        # 1 isn't good. 0.01 is okay.
-        # 0.001 and isn't good for training with DBN.
+        "C": [0.1, 1, 10, 100, 1000],
         "epsilon": [0.001, 0.01, 0.1, 1.0],
-        # sigmoid, linear isn't good. poly is okay.
-        "kernel": ["rbf"],
-        # 1 and 3 is okay.
-        #"degree": [2,4,5],
+        "kernel": ["rbf", "sigmoid", "linear", "poly"],
         "degree": [1,2,3,4,5],
-        #"degree": [2,5],
-        # 0.0001, 0.001, 0.01, 0.1, 1 isn't good
         "gamma": [0.],
         "cache_size": [CACHESIZE],
-#        # False is not good for task 7
         "shrinking": [False, True],
     })
     hyperparams = list(itertools.product(*HYPERPARAMS.values()))
@@ -86,18 +74,13 @@ def svmhyperparameters():
 
 def gbrhyperparameters():
     HYPERPARAMS = OrderedDict({
-        # 'lad' isn't good
-        'loss': ['ls'],
-        'learn_rate': [0.032, 0.01],
-        # 32 isn't good. 100 is okay.
-        'n_estimators': [320, 1000],
-        # 1-2 aren't good. 3 is okay. 10 is not good.
-        'max_depth': [4,6,8],
-        'min_samples_split': [1,3],
-        # 10 isn't good
-        'min_samples_leaf': [1, 3],
-        # 0.1 isn't good, 0.5 is okay.
-        'subsample': [0.75, 1],
+        'loss': ['ls', 'lad'],
+        'learn_rate': [1., 0.1, 0.01],
+        'n_estimators': [10, 100, 1000],
+        'max_depth': [1, 3, 5, 10, None],
+        'min_samples_split': [1, 3, 10],
+        'min_samples_leaf': [1, 3, 10],
+        'subsample': [0.1, 0.32, 1],
     })
     hyperparams = list(itertools.product(*HYPERPARAMS.values()))
     random.shuffle(hyperparams)
@@ -106,17 +89,12 @@ def gbrhyperparameters():
 
 def rfrhyperparameters():
     HYPERPARAMS = OrderedDict({
-        # 10 isn't good
-        'n_estimators': [32, 50, 100, 200],
-        # 1, 3 aren't good. 10 is okay.
-        'max_depth': [None],
-        # 1 is okay.
-        'min_samples_split': [3,10],
-        'min_samples_leaf': [1,3,10],
-        # 0.32 is okay.
-        'min_density': [0.01, 0.032, 0.1],
-        # False isn't good
-        'bootstrap': [True],
+        'n_estimators': [10, 100, 1000]
+        'max_depth': [1, 3, 5, 10, None],
+        'min_samples_split': [1, 3, 10],
+        'min_samples_leaf': [1, 3, 10],
+        'min_density': [0.01, 0.1, 1.0],
+        'bootstrap': [True, False],
         'oob_score': [True, False],
 #        'verbose': [True],
     })
