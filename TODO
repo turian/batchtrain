@@ -1,0 +1,11 @@
+* Write a README
+    * Cite Ng work.
+    * Describe how to play with hyperparameter values.
+    * Limitation about converting everything to dense.
+        * Is this even necessary?
+    * jobman.py loosely inspired by UdeM's jobman.
+
+
+* Demo and instructions for how to use script from end-to-end.
+
+* pip install.
