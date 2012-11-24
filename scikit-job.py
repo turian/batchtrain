@@ -41,7 +41,8 @@ def modelstr(clf):
 #@timeout(600)
 def train(clf, X, Y, job, kfold):
     # TODO: These should be passed in as command-line parameters
-    FOLDS = 5
+    #FOLDS = 5
+    FOLDS = 3
     EVALUATION_MEASURE = sklearn.metrics.f1_score
 
     # TODO: What we should do is have a multiclass command-line parameter,
@@ -57,7 +58,6 @@ def train(clf, X, Y, job, kfold):
     if kfold:
         for i, (train, test) in enumerate(kf):
             X_train, X_test, y_train, y_test = X[train], X[test], Y[train], Y[test]
-            print y_train
             clf.fit(X_train, y_train)
 
             # TODO: Run evals on train, for debugging?
@@ -93,14 +93,14 @@ def train(clf, X, Y, job, kfold):
 def runjob(model, h, datafile, kfold, job):
     X, Y = cPickle.load(open(datafile))
 
-    # TODO: Is it possible to get around doing this?
-    X = X.todense()
+#    # TODO: Is it possible to get around doing this?
+#    X = X.todense()
 
     print >> sys.stderr, "X = %s, Y = %s" % (X.shape, Y.shape)
     print >> sys.stderr, stats()
 
+    clf = model(**h)
     try:
-        clf = model(**h)
         train(clf, X, Y, job, kfold)
         assert job.result is not None
         print "JOB", job

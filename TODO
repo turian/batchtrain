@@ -35,3 +35,5 @@ their examples, we want to shuffle the fold indices.
 * Add support for binary classification + regression.
 
 * pip install.
+
+* Seperate hyperparams for each OVR classifier?

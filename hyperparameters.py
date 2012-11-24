@@ -3,6 +3,7 @@ from locals import *
 from collections import OrderedDict
 import itertools
 
+import sklearn.linear_model
 import sklearn.svm
 import sklearn.ensemble
 
@@ -19,6 +20,22 @@ def all_hyperparameters(odict):
         yield dict(zip(odict.keys(), h))
 
 MODEL_HYPERPARAMETERS = {
+    "SGDClassifier": OrderedDict({
+        "loss": ['hinge', 'log', 'modified_huber'],
+        "penalty": ['l2', 'l1', 'elasticnet'],
+        "alpha": [0.001, 0.0001, 0.00001],
+        "rho": [0.55, 0.85, 0.95],
+#        "l1_ratio": [0.05, 0.15, 0.45],
+        "fit_intercept": [True],
+        "n_iter": [1, 5, 25],
+        "shuffle": [True, False],
+#        "epsilon": [
+        "learning_rate": ["constant", "optimal", "invscaling"],
+        "eta0": [0.001, 0.01, 0.1],
+        "power_t": [0.1, 0.25, 0.5, 1.],
+        "warm_start": [True, False],
+    }),
+
     "SVC": OrderedDict({
         "C": [0.1, 1, 10, 100],
         "kernel": ["rbf", "sigmoid", "linear", "poly"],
@@ -78,6 +95,7 @@ MODEL_HYPERPARAMETERS = {
 }
 
 MODEL_NAME_TO_CLASS = {
+    "SGDClassifier": sklearn.linear_model.SGDClassifier,
     "SVC": sklearn.svm.SVC,
     "SVR": sklearn.svm.SVR,
     "GradientBoostingRegressor": sklearn.ensemble.GradientBoostingRegressor,
