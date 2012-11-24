@@ -9,10 +9,10 @@ import numpy
 
 import copy
 
-#TOP = 7         # Look at the top 7 jobs
-#MORE = 25       # And compare to the top 20 jobs
-TOP = 25         # Look at the top 7 jobs
-MORE = 100       # And compare to the top 20 jobs
+TOP = 7         # Look at the top 7 jobs
+MORE = 25       # And compare to the top 20 jobs
+#TOP = 25         # Look at the top 7 jobs
+#MORE = 100       # And compare to the top 20 jobs
 
 def _inc(cnts, k, k2):
     if k2 not in cnts[k]: cnts[k][k2] = 0
@@ -55,7 +55,9 @@ def topjobs(CNT, verbose):
     mins = []
     if verbose:
         print "job results = %d" % (jobman.c.count())
+#    jobman.c.ensure_index([('parameters.kfold', 1)])
     jobman.c.ensure_index([('parameters.kfold', 1)])
+    jobman.c.ensure_index([('result.95conf', 1)])
     for j in jobman.c.find({"parameters.kfold": True, "result": {"$ne": False}}).sort("result.95conf", pymongo.DESCENDING):
         if prevj is not None and prevj["parameters"] == j["parameters"]: continue # Skip duplicates
 #        # Filter out a certain hyperpam value
