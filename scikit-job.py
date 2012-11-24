@@ -25,79 +25,73 @@ import cPickle
 import scipy.sparse
 import time
 
-# Force us to get a numerical result, ever if the job will fall below TASKMIN.
-FORCE = False
-#FORCE = True
-
-# For each task, what is the minimum value for each k-fold that we should continue?
-# We look at the top 7 best models for each task num, and then pick the min over the kfolds in those jobs.
-TASKMIN = {3: 0.68, 4: 0.61, 5: 0.71, 7: 0.66, 9: 0.77, 11: 0.66, 13: 0.51, 14: 0.43, 15: 0.82}
+# TASKMIN optimization disabled.
+## Force us to get a numerical result, ever if the job will fall below TASKMIN.
+#FORCE = False
+##FORCE = True
+## For each task, what is the minimum value for each k-fold that we should continue?
+#TASKMIN = None
 
 def modelstr(clf):
 #    return simplejson.dumps(("%s" % clf.__class__, clf.get_params()))
     return repr(("%s" % clf.__class__, clf.get_params()))
 
 #@timeout(600)
-def train(clf, X, Y, job, kfold=False):
+def train(clf, X, Y, job, kfold):
+    # TODO: These should be passed in as command-line parameters
     FOLDS = 5
+#    EVALUATION_MEASURE = sklearn.
+
+    if kfold: kf = KFold(X.shape[0], FOLDS, indices=True)
+    else: assert 0
+
+    start = time.clock()
+    print >> sys.stderr, "trying %s" % modelstr(clf)
+    errs = []
     if kfold:
-        # Combine, for k-fold validation
-#        try:
-#           # WARNING: This produces bizarre results on numpy arrays
-#            X = scipy.sparse.vstack([train_set_x, valid_set_x]).tocsr()
-#        except:
-#            X = numpy.vstack([train_set_x, valid_set_x])
-        assert type(train_set_x) in [numpy.matrixlib.defmatrix.matrix, numpy.ndarray]
-        assert type(valid_set_x) in [numpy.matrixlib.defmatrix.matrix, numpy.ndarray]
-        X = numpy.vstack([train_set_x, valid_set_x])
-        Y = numpy.hstack([train_set_y, valid_set_y])
-        kf = KFold(len(Y), FOLDS, indices=True)
-
-    try:
-            start = time.clock()
-            print >> sys.stderr, "trying %d %s" % (num, modelstr(clf))
-            errs = []
-            if kfold:
-                for i, (train, test) in enumerate(kf):
-                    X_train, X_test, y_train, y_test = X[train], X[test], Y[train], Y[test]
-#                    print X_train.shape, y_train.shape
-                    clf.fit(X_train, y_train)
-                    y_test_predict = clf.predict(X_test)
-                    errs.append(rsquared(y_test, y_test_predict))
-                    print >> sys.stderr, "INTERMEDIATE", num, "kfold=%d/%d" % (i+1,FOLDS), errs[-1], modelstr(clf)
-                    print >> sys.stderr, stats()
-                    if num in TASKMIN and errs[-1] < TASKMIN[num] and i+1 < FOLDS:
-                        if FORCE:
-                            print >> sys.stderr, "FORCE=True, otherwise we'd abort becase err %f < %d taskmin %f" % (errs[-1], num, TASKMIN[num])
-                        else:
-                            print >> sys.stderr, "ABORTING. err %f < %d taskmin %f" % (errs[-1], num, TASKMIN[num])
-                            job.result = False
-                            return
-            else:
-                clf.fit(train_set_x, train_set_y)
-                pred_valid_y = clf.predict(valid_set_x)
-                errs.append(rsquared(valid_set_y, pred_valid_y))
-
-            end = time.clock()
-            difftime = end - start
-            if kfold:
-                job.result = {"mean": numpy.mean(errs), "std": numpy.std(errs), "95conf": numpy.mean(errs) - 1.96*numpy.std(errs), "min": numpy.min(errs), "folds": errs, "time": difftime}
-                print >> sys.stderr, num, "kfold=%d" % FOLDS, "mean", numpy.mean(errs), "std", numpy.std(errs), "95conf", numpy.mean(errs) - 1.96*numpy.std(errs), "min", numpy.min(errs), modelstr(clf)
-                print num, "kfold=%d" % FOLDS, "mean", numpy.mean(errs), "std", numpy.std(errs), "95conf", numpy.mean(errs) - 1.96*numpy.std(errs), "min", numpy.min(errs), modelstr(clf)
-            else:
-                job.result = {"mean": numpy.mean(errs), "title": difftime}
-                print num, numpy.mean(errs), modelstr(clf)
-            sys.stdout.flush()
+        for i, (train, test) in enumerate(kf):
+            X_train, X_test, y_train, y_test = X[train], X[test], Y[train], Y[test]
+            clf.fit(X_train, y_train)
+            y_test_predict = clf.predict(X_test)
+            print y_test_predict
+            errs.append(rsquared(y_test, y_test_predict))
+            print >> sys.stderr, "INTERMEDIATE kfold=%d/%d" % (i+1,FOLDS), errs[-1], modelstr(clf)
             print >> sys.stderr, stats()
-    except Exception, e:
-            print >> sys.stderr, "Error %s %s on %s %s" % (type(e), e, num, modelstr(clf))
+
+#            if errs[-1] < TASKMIN and i+1 < FOLDS:
+#                if FORCE:
+#                    print >> sys.stderr, "FORCE=True, otherwise we'd abort becase err %f < %d taskmin %f" % (errs[-1], TASKMIN)
+#                else:
+#                    print >> sys.stderr, "ABORTING. err %f < %d taskmin %f" % (errs[-1], TASKMIN)
+#                    job.result = False
+#                    return
+    else:
+        assert 0
+
+    end = time.clock()
+    difftime = end - start
+    if kfold:
+        job.result = {"mean": numpy.mean(errs), "std": numpy.std(errs), "95conf": numpy.mean(errs) - 1.96*numpy.std(errs), "min": numpy.min(errs), "folds": errs, "time": difftime}
+        print >> sys.stderr, num, "kfold=%d" % FOLDS, "mean", numpy.mean(errs), "std", numpy.std(errs), "95conf", numpy.mean(errs) - 1.96*numpy.std(errs), "min", numpy.min(errs), modelstr(clf)
+        print num, "kfold=%d" % FOLDS, "mean", numpy.mean(errs), "std", numpy.std(errs), "95conf", numpy.mean(errs) - 1.96*numpy.std(errs), "min", numpy.min(errs), modelstr(clf)
+    else:
+        assert 0
+#        job.result = {"mean": numpy.mean(errs), "title": difftime}
+#        print num, numpy.mean(errs), modelstr(clf)
+    sys.stdout.flush()
+    print >> sys.stderr, stats()
 
 def runjob(model, h, datafile, kfold, job):
     X, Y = cPickle.load(open(datafile))
 
+    # TODO: Is it possible to get around doing this?
+    X = X.todense()
+
     print >> sys.stderr, "X = %s, Y = %s" % (X.shape, Y.shape)
     print >> sys.stderr, stats()
 
+    clf = model(**h)
+    train(clf, X, Y, job, kfold)
     try:
         clf = model(**h)
         train(clf, X, Y, job, kfold)

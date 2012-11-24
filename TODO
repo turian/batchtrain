@@ -15,6 +15,12 @@
 
 * Discuss taskmin functionality, show how it can be added back
 
+* Move NFOLDS to locals.py, and assume we're always doing k-fold crossvalidation
+
+* Choice of evaluation criterion
+
+* We convert to dense in scikit-job.py. Can we avoid this?
+
 
 
 * EXPERIMENT_NAME should be derived from hashing the dataset.
