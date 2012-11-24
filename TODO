@@ -2,6 +2,7 @@
     * Basic description about how to get starcluster set up.
         * Need mongo installed in each node.
         * Need scikit-learn installed in each node.
+            * Is there an easy way to do this?
     * Cite Ng work.
     * Describe how to play with hyperparameter values.
     * Limitation about converting everything to dense.
@@ -12,6 +13,10 @@
 
 * Discuss taskmin functionality, show how it can be added back
 
+
+
+
+* Instead of creating a shell script, directly submit to qsub.
 
 * Demo and instructions for how to use script from end-to-end.
     * Using 20newsgroups.
