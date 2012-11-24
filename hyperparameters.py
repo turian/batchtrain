@@ -1,6 +1,7 @@
 from locals import *
 
 from collections import OrderedDict
+import itertools
 
 # Code from http://rosettacode.org/wiki/Power_set#Python
 def list_powerset2(lst):
@@ -9,12 +10,12 @@ def list_powerset2(lst):
 def powerset(s):
     return frozenset(map(frozenset, list_powerset2(list(s))))
 
-#    hyperparams = list(itertools.product(*HYPERPARAMS.values()))
-#    random.shuffle(hyperparams)
-#    for h in hyperparams:
-#        yield dict(zip(HYPERPARAMS.keys(), h))
+def all_hyperparameters(odict):
+    hyperparams = list(itertools.product(*odict.values()))
+    for h in hyperparams:
+        yield dict(zip(odict.keys(), h))
 
-HYPERPARAMS = {
+MODEL_HYPERPARAMETERS = {
     "SVR": OrderedDict({
         "C": [0.1, 1, 10, 100, 1000],
         "epsilon": [0.001, 0.01, 0.1, 1.0],

@@ -21,15 +21,12 @@ from sklearn.cross_validation import KFold
 from optparse import OptionParser
 
 from common.stats import stats
-from common.file import myopen
 
 import random
 
 import cPickle
 import scipy.sparse
 import time
-
-from rsquared import rsquared
 
 # Force us to get a numerical result, ever if the job will fall below TASKMIN.
 FORCE = False
@@ -118,12 +115,12 @@ def train(num, ty, clf, train_set_x, train_set_y, valid_set_x, valid_set_y, job,
 
 def runjob(regressor, h, num, features, kfold, job):
         # y-values
-        valid_set_y, train_set_y = cPickle.load(myopen("datagz/sparse.test%d.pkl.gz" % num))
+        valid_set_y, train_set_y = cPickle.load(open("datagz/sparse.test%d.pkl.gz" % num))
 
         valid_set_x, train_set_x, test_set_x = [None] * 3
         # Now load all features
         for f in features:
-            vals = cPickle.load(myopen(f))
+            vals = cPickle.load(open(f))
             new_valid_set_x, new_train_set_x, new_test_set_x = vals
             # Just features, no y-values
             try:

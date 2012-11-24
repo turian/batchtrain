@@ -17,6 +17,7 @@
 
 
 
+* EXPERIMENT_NAME should be derived from hashing the dataset.
 
 * Instead of creating a shell script, directly submit to qsub.
 

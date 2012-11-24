@@ -18,6 +18,7 @@ have already been run, this is determined automagically.
 Usage
 -----
 
+0. Edit locals.py as desired.
 1. Create an SGE cluster. The easiest way to do this is to use
 starcluster to create an EC2 cluster. (Use spot instances to save
 a lot of money.)
@@ -29,6 +30,13 @@ a lot of money.)
         SETUP_CLASS = starcluster.plugins.pkginstaller.PackageInstaller
         # list of apt-get installable packages
         PACKAGES = mongodb, python-pymongo
+
+    You will also probably need to have the following line in your `/etc/mongodb.conf`:
+
+        bind_ip = 'master'
+
+    after which you should restart the Mongo server. (WARNING: This might
+    create a Mongo-server that is globally internet readable+writeable!)
 
     1.2 Make sure to:
         easy_install scikit-learn

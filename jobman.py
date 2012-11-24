@@ -4,11 +4,14 @@ Manage the output of job runs.
 """
 
 import simplejson
-import common.mongodb
 import pymongo
 import pymongo.objectid
 
-c = common.mongodb.collection("jobman", "jobs", HOSTNAME="master")
+from locals import EXPERIMENT_NAME
+
+connection = pymongo.Connection('master', 27017)    # Use the master node for the DB
+db = connection['jobman']
+c = db[EXPERIMENT_NAME]
 c.ensure_index('parameters', unique=True)
 
 class Job(object):
