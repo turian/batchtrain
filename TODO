@@ -1,4 +1,5 @@
 * Write a README
+    * Shuffle training examples.
     * Basic description about how to get starcluster set up.
         * Need mongo installed in each node.
         * Need scikit-learn installed in each node.
