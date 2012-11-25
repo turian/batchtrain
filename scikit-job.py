@@ -41,8 +41,8 @@ def modelstr(clf):
 #@timeout(600)
 def train(model, h, X, Y, job, kfold):
     # TODO: These should be passed in as command-line parameters
-    #FOLDS = 5
-    FOLDS = 3
+    FOLDS = 5
+    #FOLDS = 3
     EVALUATION_MEASURE = sklearn.metrics.f1_score
 
     if kfold: kf = KFold(X.shape[0], FOLDS, indices=True)
@@ -63,6 +63,14 @@ def train(model, h, X, Y, job, kfold):
             clf.fit(X_train, y_train)
 
             # TODO: Run evals on train, for debugging?
+
+#            for j in range(y_test.shape[0]):
+#                probs = []
+#                for k, est in enumerate(clf.estimators_):
+#                    y_test_predict = est.predict_proba(X_test[j])
+#                    probs.append((y_test_predict[0][1], k))
+#                    print y_test_predict[0][1]
+#                print sorted(probs)[-1]
 
             y_test_predict = clf.predict(X_test)
             errs.append(EVALUATION_MEASURE(y_test, y_test_predict))
@@ -129,7 +137,7 @@ if __name__ == "__main__":
         # This parameter shouldn't affect the result, it's just used to
         # determine training efficiency.
         del job.parameters["hyperparameters"]["cache_size"]
-    if job.result is not None:
+    if 0 and job.result is not None:
         # If the result is False (below TASKMIN) and we aren't forcing a numerical result
         if job.result == False and not FORCE:
             print >> sys.stderr, "We already have a result for %s: %s" % (job.parameters, job.result)
