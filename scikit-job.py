@@ -13,7 +13,7 @@ from jobman import Job
 
 import numpy
 
-from sklearn.cross_validation import KFold
+from sklearn.cross_validation import KFold, LeaveOneOut
 from sklearn.multiclass import OneVsRestClassifier
 import sklearn.metrics
 
@@ -46,6 +46,7 @@ def train(model, h, X, Y, job, kfold):
     EVALUATION_MEASURE = sklearn.metrics.f1_score
 
     if kfold: kf = KFold(X.shape[0], FOLDS, indices=True)
+    #if kfold: kf = LeaveOneOut(X.shape[0], indices=True)
     else: assert 0
 
     start = time.clock()
@@ -67,10 +68,11 @@ def train(model, h, X, Y, job, kfold):
 #            for j in range(y_test.shape[0]):
 #                probs = []
 #                for k, est in enumerate(clf.estimators_):
+#                    print est.predict(X_test[j])
 #                    y_test_predict = est.predict_proba(X_test[j])
 #                    probs.append((y_test_predict[0][1], k))
 #                    print y_test_predict[0][1]
-#                print sorted(probs)[-1]
+#                print sorted(probs)[-1][0], y_test[j]
 
             y_test_predict = clf.predict(X_test)
             errs.append(EVALUATION_MEASURE(y_test, y_test_predict))

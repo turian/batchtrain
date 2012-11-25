@@ -11,7 +11,7 @@ CONVERT_TO_DENSE = False
 #CONVERT_TO_DENSE = True
 
 CACHESIZE = 400 # For ec2 small
-JOBS_PER_FILE = 25
+JOBS_PER_FILE = 250
 #JOBS_PER_FILE = 5
 ##KFOLD = True
 #KFOLD = False
@@ -20,7 +20,7 @@ JOBS_PER_FILE = 25
 # TODO: Add GBC
 #MODELS_TO_USE = ["MultinomialNB", "SGDClassifier", "BayesianRidge", "Perceptron", "SVC", "RandomForestClassifier", "KNeighborsClassifier", "LabelSpreading", "GradientBoostingClassifier"]
 #MODELS_TO_USE = ["RandomForestClassifier"]
-MODELS_TO_USE = ["Perceptron"]
+MODELS_TO_USE = ["SGDClassifier"]
 #MODELS_TO_USE = ["GradientBoostingClassifier"]
 ## Regression models
 #MODELS_TO_USE = ["SVR", "GradientBoostedRegressor", "RandomForestRegressor"]
