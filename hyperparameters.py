@@ -43,6 +43,17 @@ MODEL_HYPERPARAMETERS = {
         "warm_start": [True, False],
     }),
 
+    "BayesianRidge": OrderedDict({
+        "n_iter": [100, 300, 1000],
+        "tol": [1e-2, 1e-3, 1e-4],
+        "alpha_1": [1e-5, 1e-6, 1e-7],
+        "alpha_2": [1e-5, 1e-6, 1e-7],
+        "lambda_1": [1e-5, 1e-6, 1e-7],
+        "lambda_2": [1e-5, 1e-6, 1e-7],
+        "normalize": [True, False],
+    }),
+
+
     "SVC": OrderedDict({
         "C": [0.1, 1, 10, 100],
         "kernel": ["rbf", "sigmoid", "linear", "poly"],
@@ -135,6 +146,7 @@ MODEL_HYPERPARAMETERS = {
 MODEL_NAME_TO_CLASS = {
     "MultinomialNB": sklearn.naive_bayes.MultinomialNB,
     "SGDClassifier": sklearn.linear_model.SGDClassifier,
+    "BayesianRidge": sklearn.linear_model.BayesianRidge,
     "SVC": sklearn.svm.SVC,
     "SVR": sklearn.svm.SVR,
     "GradientBoostingClassifier": sklearn.ensemble.GradientBoostingClassifier,
