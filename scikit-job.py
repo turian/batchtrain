@@ -68,11 +68,10 @@ def train(model, h, X, Y, job, kfold):
 #            for j in range(y_test.shape[0]):
 #                probs = []
 #                for k, est in enumerate(clf.estimators_):
-#                    print est.predict(X_test[j])
 #                    y_test_predict = est.predict_proba(X_test[j])
 #                    probs.append((y_test_predict[0][1], k))
-#                    print y_test_predict[0][1]
-#                print sorted(probs)[-1][0], y_test[j]
+#                print "ACC", y_test[j][sorted(probs)[-1][1]]
+#                sys.stdout.flush()
 
             y_test_predict = clf.predict(X_test)
             errs.append(EVALUATION_MEASURE(y_test, y_test_predict))
@@ -139,7 +138,7 @@ if __name__ == "__main__":
         # This parameter shouldn't affect the result, it's just used to
         # determine training efficiency.
         del job.parameters["hyperparameters"]["cache_size"]
-    if 0 and job.result is not None:
+    if job.result is not None:
         # If the result is False (below TASKMIN) and we aren't forcing a numerical result
         if job.result == False and not FORCE:
             print >> sys.stderr, "We already have a result for %s: %s" % (job.parameters, job.result)
