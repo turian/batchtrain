@@ -6,6 +6,7 @@ import itertools
 import sklearn.linear_model
 import sklearn.svm
 import sklearn.ensemble
+import sklearn.neighbors
 
 # Code from http://rosettacode.org/wiki/Power_set#Python
 def list_powerset2(lst):
@@ -92,6 +93,14 @@ MODEL_HYPERPARAMETERS = {
         'oob_score': [True, False],
 #        'verbose': [True],
     }),
+
+    "KNeighborsClassifier": OrderedDict({
+        'n_neighbors': [3, 5, 7],
+        'weights': ['uniform', 'distance'],
+        'algorithm': ['ball_tree', 'kd_tree', 'brute'],
+        'leaf_size': [10, 30, 100],
+        'p': [1, 2],
+    })
 }
 
 MODEL_NAME_TO_CLASS = {
@@ -101,4 +110,5 @@ MODEL_NAME_TO_CLASS = {
     "GradientBoostingRegressor": sklearn.ensemble.GradientBoostingRegressor,
     "RandomForestClassifier": sklearn.ensemble.RandomForestClassifier,
     "RandomForestRegressor": sklearn.ensemble.RandomForestRegressor,
+    "KNeighborsClassifier": sklearn.neighbors.KNeighborsClassifier,
 }

@@ -7,14 +7,15 @@
 EXPERIMENT_NAME = "experiment"
 
 CACHESIZE = 400 # For ec2 small
-JOBS_PER_FILE = 250
+JOBS_PER_FILE = 5
 ##KFOLD = True
 #KFOLD = False
 
 # Classification models
 # TODO: Add GBC
-#MODELS_TO_USE = ["SGDClassifier", "SVC", "RandomForestClassifier"]
+#MODELS_TO_USE = ["SGDClassifier", "SVC", "RandomForestClassifier", "KNeighborsClassifier"]
 #MODELS_TO_USE = ["RandomForestClassifier"]
-MODELS_TO_USE = ["SGDClassifier"]
+#MODELS_TO_USE = ["SGDClassifier"]
+MODELS_TO_USE = ["KNeighborsClassifier"]
 ## Regression models
 #MODELS_TO_USE = ["SVR", "GradientBoostedRegressor", "RandomForestRegressor"]
