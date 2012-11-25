@@ -55,7 +55,7 @@ MODEL_HYPERPARAMETERS = {
 
     "Perceptron": OrderedDict({
         "penalty": ["l2", "l1", "elasticnet"],
-        "alpha": [1e-3, 1e-4, 1e-5],
+        "alpha": [1e-2, 1e-3, 1e-4, 1e-5, 1e-6],
         "n_iter": [1, 5, 25],
         "shuffle": [True, False],
         "eta0": [0.1, 1., 10.],
