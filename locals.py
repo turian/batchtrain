@@ -7,8 +7,8 @@
 EXPERIMENT_NAME = "experiment"
 
 # Convert matrices to dense. This is slow, so you should only do it if your models require it.
-#CONVERT_TO_DENSE = False
-CONVERT_TO_DENSE = True
+CONVERT_TO_DENSE = False
+#CONVERT_TO_DENSE = True
 
 CACHESIZE = 400 # For ec2 small
 JOBS_PER_FILE = 25
@@ -18,9 +18,9 @@ JOBS_PER_FILE = 25
 
 # Classification models
 # TODO: Add GBC
-#MODELS_TO_USE = ["MultinomialNB", "SGDClassifier", "BayesianRidge", "SVC", "RandomForestClassifier", "KNeighborsClassifier", "LabelSpreading", "GradientBoostingClassifier"]
+#MODELS_TO_USE = ["MultinomialNB", "SGDClassifier", "BayesianRidge", "Perceptron", "SVC", "RandomForestClassifier", "KNeighborsClassifier", "LabelSpreading", "GradientBoostingClassifier"]
 #MODELS_TO_USE = ["RandomForestClassifier"]
-MODELS_TO_USE = ["BayesianRidge"]
+MODELS_TO_USE = ["Perceptron"]
 #MODELS_TO_USE = ["GradientBoostingClassifier"]
 ## Regression models
 #MODELS_TO_USE = ["SVR", "GradientBoostedRegressor", "RandomForestRegressor"]

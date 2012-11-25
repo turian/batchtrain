@@ -53,6 +53,14 @@ MODEL_HYPERPARAMETERS = {
         "normalize": [True, False],
     }),
 
+    "Perceptron": OrderedDict({
+        "penalty": ["l2", "l1", "elasticnet"],
+        "alpha": [1e-3, 1e-4, 1e-5],
+        "n_iter": [1, 5, 25],
+        "shuffle": [True, False],
+        "eta0": [0.1, 1., 10.],
+        "warm_start": [True, False],
+    }),
 
     "SVC": OrderedDict({
         "C": [0.1, 1, 10, 100],
@@ -147,6 +155,7 @@ MODEL_NAME_TO_CLASS = {
     "MultinomialNB": sklearn.naive_bayes.MultinomialNB,
     "SGDClassifier": sklearn.linear_model.SGDClassifier,
     "BayesianRidge": sklearn.linear_model.BayesianRidge,
+    "Perceptron": sklearn.linear_model.Perceptron,
     "SVC": sklearn.svm.SVC,
     "SVR": sklearn.svm.SVR,
     "GradientBoostingClassifier": sklearn.ensemble.GradientBoostingClassifier,

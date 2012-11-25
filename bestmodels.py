@@ -63,7 +63,7 @@ def topjobs(CNT, verbose):
 #        # Filter out a certain hyperpam value
 #        if j["parameters"]["hyperparameters"]["shrinking"] == False: continue
 #        if j["parameters"]["hyperparameters"]["C"] != 100: continue
-#        if j["parameters"]["model"] != "SVR": continue
+        if j["parameters"]["model"] != "Perceptron": continue
 #        if j["parameters"]["hyperparameters"]["kernel"] != "RBF": continue
         if "time" in j["result"]: time = "time=%.2fm" % (j["result"]["time"]/60)
         else: time = "        "
