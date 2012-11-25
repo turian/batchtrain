@@ -6,6 +6,7 @@
 # TODO: Perhaps the experiment name should be derived by hashing the data-set?
 EXPERIMENT_NAME = "experiment"
 
+# Convert matrices to dense. This is slow, so you should only do it if your models require it.
 CONVERT_TO_DENSE = True
 
 CACHESIZE = 400 # For ec2 small
@@ -15,9 +16,9 @@ JOBS_PER_FILE = 5
 
 # Classification models
 # TODO: Add GBC
-#MODELS_TO_USE = ["SGDClassifier", "SVC", "RandomForestClassifier", "KNeighborsClassifier", "LabelSpreading"]
+#MODELS_TO_USE = ["MultinomialNB", "SGDClassifier", "SVC", "RandomForestClassifier", "KNeighborsClassifier", "LabelSpreading", "GradientBoostingClassifier"]
 #MODELS_TO_USE = ["RandomForestClassifier"]
 #MODELS_TO_USE = ["SGDClassifier"]
-MODELS_TO_USE = ["LabelSpreading"]
+MODELS_TO_USE = ["MultinomialNB"]
 ## Regression models
 #MODELS_TO_USE = ["SVR", "GradientBoostedRegressor", "RandomForestRegressor"]

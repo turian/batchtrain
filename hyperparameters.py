@@ -8,6 +8,7 @@ import sklearn.svm
 import sklearn.ensemble
 import sklearn.neighbors
 import sklearn.semi_supervised
+import sklearn.naive_bayes
 
 # Code from http://rosettacode.org/wiki/Power_set#Python
 def list_powerset2(lst):
@@ -22,6 +23,10 @@ def all_hyperparameters(odict):
         yield dict(zip(odict.keys(), h))
 
 MODEL_HYPERPARAMETERS = {
+    "MultinomialNB": OrderedDict({
+        "alpha": [0.01, 0.032, 0.1, 0.32, 1.0, 10.]
+    }),
+
     "SGDClassifier": OrderedDict({
         "loss": ['hinge', 'log', 'modified_huber'],
         "penalty": ['l2', 'l1', 'elasticnet'],
@@ -56,6 +61,18 @@ MODEL_HYPERPARAMETERS = {
         "gamma": [1e-3, 1e-5, 0.],
         "cache_size": [CACHESIZE],
         "shrinking": [False, True],
+    }),
+
+    "GradientBoostingClassifier": OrderedDict({
+        'loss': ['deviance'],
+        'learn_rate': [1., 0.1, 0.01],
+        #'n_estimators': [10, 32, 100, 320],
+        'n_estimators': [10, 32, 100],
+        'max_depth': [1, 3, None],
+        'min_samples_split': [1, 3],
+        'min_samples_leaf': [1, 3],
+        'subsample': [0.032, 0.1, 0.32, 1],
+#        'alpha': [0.5, 0.9],
     }),
 
     "GradientBoostingRegressor": OrderedDict({
@@ -114,9 +131,11 @@ MODEL_HYPERPARAMETERS = {
 }
 
 MODEL_NAME_TO_CLASS = {
+    "MultinomialNB": sklearn.naive_bayes.MultinomialNB,
     "SGDClassifier": sklearn.linear_model.SGDClassifier,
     "SVC": sklearn.svm.SVC,
     "SVR": sklearn.svm.SVR,
+    "GradientBoostingClassifier": sklearn.ensemble.GradientBoostingClassifier,
     "GradientBoostingRegressor": sklearn.ensemble.GradientBoostingRegressor,
     "RandomForestClassifier": sklearn.ensemble.RandomForestClassifier,
     "RandomForestRegressor": sklearn.ensemble.RandomForestRegressor,

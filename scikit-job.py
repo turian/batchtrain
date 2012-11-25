@@ -97,13 +97,14 @@ def runjob(model, h, datafile, kfold, job):
 
     # TODO: Is it possible to get around doing this?
     # e.g. determine based upon "model" ?
+    # At the very least, this should be a command-line param
+    from locals import CONVERT_TO_DENSE
     if CONVERT_TO_DENSE:
         X = X.todense()
 
     print >> sys.stderr, "X = %s, Y = %s" % (X.shape, Y.shape)
     print >> sys.stderr, stats()
 
-    train(model, h, X, Y, job, kfold)
     try:
         train(model, h, X, Y, job, kfold)
         assert job.result is not None
