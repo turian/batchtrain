@@ -96,7 +96,9 @@ def runjob(model, h, datafile, kfold, job):
     X, Y = cPickle.load(open(datafile))
 
     # TODO: Is it possible to get around doing this?
-    X = X.todense()
+    # e.g. determine based upon "model" ?
+    if CONVERT_TO_DENSE:
+        X = X.todense()
 
     print >> sys.stderr, "X = %s, Y = %s" % (X.shape, Y.shape)
     print >> sys.stderr, stats()

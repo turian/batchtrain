@@ -6,6 +6,8 @@
 # TODO: Perhaps the experiment name should be derived by hashing the data-set?
 EXPERIMENT_NAME = "experiment"
 
+CONVERT_TO_DENSE = True
+
 CACHESIZE = 400 # For ec2 small
 JOBS_PER_FILE = 5
 ##KFOLD = True
