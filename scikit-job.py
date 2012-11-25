@@ -39,25 +39,27 @@ def modelstr(clf):
     return repr(("%s" % clf.__class__, clf.get_params()))
 
 #@timeout(600)
-def train(clf, X, Y, job, kfold):
+def train(model, h, X, Y, job, kfold):
     # TODO: These should be passed in as command-line parameters
     #FOLDS = 5
     FOLDS = 3
     EVALUATION_MEASURE = sklearn.metrics.f1_score
 
-    # TODO: What we should do is have a multiclass command-line parameter,
-    # in which case we do the following:
-    clf = OneVsRestClassifier(clf)
-
     if kfold: kf = KFold(X.shape[0], FOLDS, indices=True)
     else: assert 0
 
     start = time.clock()
-    print >> sys.stderr, "trying %s" % modelstr(clf)
+    print >> sys.stderr, "trying %s %s" % (model, h)
     errs = []
     if kfold:
         for i, (train, test) in enumerate(kf):
             X_train, X_test, y_train, y_test = X[train], X[test], Y[train], Y[test]
+
+            clf = model(**h)
+            # TODO: What we should do is have a multiclass command-line parameter,
+            # in which case we do the following:
+            clf = OneVsRestClassifier(clf)
+
             clf.fit(X_train, y_train)
 
             # TODO: Run evals on train, for debugging?
@@ -93,20 +95,20 @@ def train(clf, X, Y, job, kfold):
 def runjob(model, h, datafile, kfold, job):
     X, Y = cPickle.load(open(datafile))
 
-#    # TODO: Is it possible to get around doing this?
-#    X = X.todense()
+    # TODO: Is it possible to get around doing this?
+    X = X.todense()
 
     print >> sys.stderr, "X = %s, Y = %s" % (X.shape, Y.shape)
     print >> sys.stderr, stats()
 
-    clf = model(**h)
+    train(model, h, X, Y, job, kfold)
     try:
-        train(clf, X, Y, job, kfold)
+        train(model, h, X, Y, job, kfold)
         assert job.result is not None
         print "JOB", job
         sys.stdout.flush()
     except Exception, e:
-        print >> sys.stderr, "Error %s %s on %s" % (type(e), e, modelstr(clf))
+        print >> sys.stderr, "Error %s %s on %s" % (type(e), e, (model, h))
 
 if __name__ == "__main__":
     parser = OptionParser()

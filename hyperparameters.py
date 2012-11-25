@@ -7,6 +7,7 @@ import sklearn.linear_model
 import sklearn.svm
 import sklearn.ensemble
 import sklearn.neighbors
+import sklearn.semi_supervised
 
 # Code from http://rosettacode.org/wiki/Power_set#Python
 def list_powerset2(lst):
@@ -100,6 +101,15 @@ MODEL_HYPERPARAMETERS = {
         'algorithm': ['ball_tree', 'kd_tree', 'brute'],
         'leaf_size': [10, 30, 100],
         'p': [1, 2],
+    }),
+
+    "LabelSpreading": OrderedDict({
+        'kernel': ['knn', 'rbf'],
+        'gamma': [10, 20, 100, 200],
+        'n_neighbors': [3, 5, 7, 9],
+        'alpha': [0, 0.02, 0.2, 1.0],
+        'max_iters': [3, 10, 30, 100],
+        'tol': [1e-5, 1e-3, 1e-1, 1.],
     })
 }
 
@@ -111,4 +121,5 @@ MODEL_NAME_TO_CLASS = {
     "RandomForestClassifier": sklearn.ensemble.RandomForestClassifier,
     "RandomForestRegressor": sklearn.ensemble.RandomForestRegressor,
     "KNeighborsClassifier": sklearn.neighbors.KNeighborsClassifier,
+    "LabelSpreading": sklearn.semi_supervised.LabelSpreading,
 }

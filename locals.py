@@ -13,9 +13,9 @@ JOBS_PER_FILE = 5
 
 # Classification models
 # TODO: Add GBC
-#MODELS_TO_USE = ["SGDClassifier", "SVC", "RandomForestClassifier", "KNeighborsClassifier"]
+#MODELS_TO_USE = ["SGDClassifier", "SVC", "RandomForestClassifier", "KNeighborsClassifier", "LabelSpreading"]
 #MODELS_TO_USE = ["RandomForestClassifier"]
 #MODELS_TO_USE = ["SGDClassifier"]
-MODELS_TO_USE = ["KNeighborsClassifier"]
+MODELS_TO_USE = ["LabelSpreading"]
 ## Regression models
 #MODELS_TO_USE = ["SVR", "GradientBoostedRegressor", "RandomForestRegressor"]
