@@ -23,6 +23,8 @@
 
 * We convert to dense in scikit-job.py. Can we avoid this?
 
+* Bug: Sometimes jobs don't save to Mongo?
+
 
 * Folds are shuffled? Or not? Because if the person hasn't shuffled
 their examples, we want to shuffle the fold indices.
